@@ -108,15 +108,9 @@ function Shell() {
                     nav("/app");
                   }}
                 >
-                  {workspaces.map((w, i) => (
+                  {workspaces.map((w) => (
                     <option key={w.id} value={w.id}>
-                      Scenario {i + 1} /{" "}
-                      {w.id === state?.id
-                        ? state.snapshot.offers.reduce(
-                            (n, x) => n + x.quantity,
-                            0,
-                          ) + " units across offers"
-                        : w.name}
+                      {w.name} / {w.id.slice(-4).toUpperCase()}
                     </option>
                   ))}
                 </select>

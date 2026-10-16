@@ -1,3 +1,4 @@
+import { summarizeRecovery } from "../src/server/agent.js";
 import { describe, it, expect } from "vitest";
 import { sampleFixture } from "../src/domain/fixture.js";
 import {
@@ -103,4 +104,19 @@ it("rejects duplicate order allocations and altered summary counts", () => {
     p = planRecovery(s, impact, c);
   p.allocations.push({ ...p.allocations[0] });
   expect(validatePlan(s, p, c)).toContain("Duplicate order allocation.");
+});
+
+it("formats user-facing costs from the checked plan without model prose", () => {
+  const p = {
+    completeOrders: 2,
+    totalAffected: 2,
+    remainingShortage: 0,
+    stockUsed: 20,
+    purchased: { offer_d: 80 },
+    purchaseCents: 96000,
+    premiumCents: 16000,
+    exhausted: true,
+  } as any;
+  expect(summarizeRecovery(p)).toContain("Additional component cost: $160.00.");
+  expect(summarizeRecovery(p)).toContain("Draft purchase value: $960.00.");
 });

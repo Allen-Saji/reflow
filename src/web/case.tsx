@@ -307,7 +307,9 @@ export function RecoveryCase() {
               <Network size={18} />
               <div>
                 <strong>
-                  {mode === "agent" ? "Agent summary" : "Guided investigation"}
+                  {mode === "agent"
+                    ? "Agent investigation"
+                    : "Guided investigation"}
                 </strong>
                 <p>{summary}</p>
               </div>

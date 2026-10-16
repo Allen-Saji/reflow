@@ -28,9 +28,9 @@ export function Operations() {
   return (
     <main className="page" ref={reveal}>
       <PageHead
-        eyebrow="THE OPERATIONS DESK"
-        title="Keep the work moving."
-        description="Customer commitments, supply changes, and a clear next step."
+        eyebrow="OPERATIONS"
+        title="Order overview"
+        description="Track orders, available stock, and supply problems."
         action={
           !s.disruption ? (
             <Button onClick={() => setModal(true)}>
@@ -48,7 +48,7 @@ export function Operations() {
         <div>
           <span>Customer orders</span>
           <strong>{s.orders.length.toString().padStart(2, "0")}</strong>
-          <small>In this planning scenario</small>
+          <small>In this scenario</small>
         </div>
         <div>
           <span>{verified ? "Projected on time" : "Orders affected"}</span>
@@ -63,19 +63,19 @@ export function Operations() {
           </strong>
           <small>
             {verified
-              ? "Under recorded plan assumptions"
+              ? "Based on the saved recovery plan"
               : s.disruption
-                ? "Linked to the disrupted source"
-                : "No disruption recorded"}
+                ? "Need a recovery plan"
+                : "No supply problems reported"}
           </small>
         </div>
         <div>
-          <span>On-hand inventory</span>
+          <span>Available stock</span>
           <strong>
             {s.stock.quantity - s.stockReserved}
             <em> units</em>
           </strong>
-          <small>Available on hand; excludes expected supply</small>
+          <small>In stock now; incoming supply excluded</small>
         </div>
       </div>
       {s.disruption ? (
@@ -92,7 +92,7 @@ export function Operations() {
             </span>
             <h2>
               {verified
-                ? "A plan in place. Evidence attached."
+                ? "Recovery plan saved"
                 : (s.factories.find((f) => f.id === s.disruption!.factoryId)
                     ?.name || "Recorded factory") +
                   " is unavailable through Day " +
@@ -101,8 +101,8 @@ export function Operations() {
             </h2>
             <p>
               {verified
-                ? "Internal allocations and a draft requisition are saved. Supplier delivery is still expected."
-                : "Trace the exposure and evaluate a replacement before committing your stock."}
+                ? "Stock is allocated and a purchase request is drafted. Replacement supply has not arrived yet."
+                : "See which orders are affected and compare replacement suppliers."}
             </p>
           </div>
           <ArrowRight />
@@ -113,10 +113,10 @@ export function Operations() {
             <Network size={32} />
           </div>
           <div>
-            <h2>Start with a change in supply.</h2>
+            <h2>Report a supply problem</h2>
             <p>
-              Record a factory disruption. Follow its dependencies to the
-              customer orders that need attention.
+              Choose the affected factory to see which customer orders need a
+              recovery plan.
             </p>
             <button className="text-button" onClick={() => setModal(true)}>
               Report a disruption <ArrowRight size={16} />
@@ -129,9 +129,7 @@ export function Operations() {
         <div className="section-head">
           <div>
             <h2>Customer orders</h2>
-            <p>
-              Readiness comes from the modeled supply and delivery assumptions.
-            </p>
+            <p>Order status based on the current supply plan.</p>
           </div>
           <button
             className="text-button"
@@ -152,7 +150,7 @@ export function Operations() {
           create internal allocations and draft requisitions.
         </span>
         <Link to="/app/data">
-          Inspect the data <ArrowRight size={14} />
+          View source data <ArrowRight size={14} />
         </Link>
       </div>
       {modal && <DisruptionModal onClose={() => setModal(false)} />}
@@ -214,8 +212,8 @@ export function DisruptionModal({ onClose }: { onClose: () => void }) {
           </button>
         </header>
         <p>
-          Record the disruption and the constraint you want the agent to work
-          within.
+          Choose the affected factory, how long it is unavailable, and your
+          extra cost limit.
         </p>
         <label>
           Affected factory

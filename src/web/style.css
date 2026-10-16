@@ -91,11 +91,17 @@ p {
 h1,
 h2,
 h3 {
+  font-family: inherit;
+  font-style: normal;
+  font-weight: 500;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+.landing :is(h1, h2, h3) {
   font-family: "Playfair Display", Georgia, serif;
   font-style: italic;
   font-weight: 400;
   letter-spacing: -0.035em;
-  text-wrap: balance;
 }
 h2 {
   font-size: 30px;
@@ -668,12 +674,12 @@ strong {
 }
 .company strong {
   display: block;
-  font-size: 11px;
+  font-size: 13px;
 }
 .company small {
   display: block;
   color: var(--faint);
-  font-size: 8px;
+  font-size: 11px;
   margin-top: 5px;
 }
 .sidebar nav {
@@ -687,7 +693,7 @@ strong {
   gap: 11px;
   padding: 13px 14px;
   min-height: 47px;
-  font-size: 11px;
+  font-size: 13px;
   color: var(--muted);
   border: 1px solid transparent;
   border-radius: 16px;
@@ -723,7 +729,7 @@ strong {
   margin-bottom: 17px;
 }
 .sidebar-bottom p {
-  font-size: 10px;
+  font-size: 12px;
   line-height: 1.9;
 }
 .sidebar-bottom a {
@@ -733,7 +739,7 @@ strong {
   margin-top: 24px;
   padding-top: 22px;
   border-top: 1px solid var(--line);
-  font-size: 9px;
+  font-size: 12px;
 }
 .app-body {
   min-width: 0;
@@ -755,7 +761,7 @@ strong {
   align-items: center;
   gap: 12px;
   color: var(--faint);
-  font-size: 10px;
+  font-size: 12px;
 }
 .breadcrumbs strong {
   color: var(--gold-light);
@@ -797,7 +803,7 @@ option {
 }
 .top-actions select {
   max-width: 180px;
-  font-size: 9px;
+  font-size: 11px;
 }
 .page {
   padding: 40px 38px 60px;
@@ -812,13 +818,13 @@ option {
   margin-bottom: 32px;
 }
 .page-head h1 {
-  font-size: clamp(36px, 3.4vw, 52px);
+  font-size: clamp(28px, 2.8vw, 38px);
   line-height: 1.13;
   margin: 13px 0;
   letter-spacing: -0.04em;
 }
 .page-head p {
-  font-size: 12px;
+  font-size: 14px;
   color: var(--muted);
   max-width: 600px;
 }
@@ -851,7 +857,7 @@ option {
   pointer-events: none;
 }
 .metrics span {
-  font-size: 10px;
+  font-size: 13px;
   color: var(--muted);
 }
 .metrics strong {
@@ -863,14 +869,14 @@ option {
   color: var(--gold-light);
 }
 .metrics strong em {
-  font-size: 11px;
+  font-size: 13px;
   font-style: normal;
   letter-spacing: 0;
   color: var(--muted);
   margin-left: 4px;
 }
 .metrics small {
-  font-size: 9px;
+  font-size: 12px;
   line-height: 1.7;
   color: var(--muted);
 }
@@ -899,11 +905,11 @@ option {
   flex-shrink: 0;
 }
 .welcome-panel h2 {
-  font-size: 27px;
+  font-size: 22px;
   margin-bottom: 8px;
 }
 .welcome-panel p {
-  font-size: 12px;
+  font-size: 14px;
   max-width: 530px;
   color: var(--muted);
 }
@@ -928,10 +934,10 @@ option {
   padding: 0 25px;
 }
 .section-head h2 {
-  font-size: 28px;
+  font-size: 22px;
 }
 .section-head p {
-  font-size: 11px;
+  font-size: 14px;
   color: var(--muted);
   margin-top: 7px;
 }
@@ -953,11 +959,11 @@ table {
   width: 100%;
   border-collapse: collapse;
   text-align: left;
-  font-size: 11px;
+  font-size: 13px;
   white-space: nowrap;
 }
 th {
-  font-size: 8px;
+  font-size: 11px;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.12em;
@@ -983,13 +989,13 @@ tbody tr:last-child td {
 td strong {
   display: block;
   color: var(--ink);
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 500;
 }
 td small {
   display: block;
   color: var(--muted);
-  font-size: 9px;
+  font-size: 12px;
   margin-top: 6px;
 }
 .context-note {
@@ -998,7 +1004,7 @@ td small {
   gap: 10px;
   margin-top: 24px;
   color: var(--muted);
-  font-size: 10px;
+  font-size: 12px;
   line-height: 1.8;
 }
 .context-note > svg {
@@ -1030,11 +1036,11 @@ td small {
   background: rgba(167, 139, 113, 0.06);
 }
 .incident-banner h2 {
-  font-size: 28px;
+  font-size: 22px;
   margin: 8px 0;
 }
 .incident-banner p {
-  font-size: 11px;
+  font-size: 14px;
   color: var(--muted);
 }
 .incident-banner > .lucide {
@@ -1060,7 +1066,7 @@ td small {
   margin-bottom: 22px;
 }
 .case-page .page-head h1 {
-  font-size: clamp(33px, 3.15vw, 48px);
+  font-size: clamp(28px, 2.8vw, 38px);
 }
 .case-stats {
   display: flex;
@@ -1402,10 +1408,8 @@ td small {
   color: var(--gold-light);
 }
 .verified-receipt > strong {
-  font-family: "Playfair Display", Georgia, serif;
-  font-size: 28px;
-  font-style: italic;
-  font-weight: 400;
+  font-size: 24px;
+  font-weight: 500;
 }
 .verified-receipt > .mono {
   font-size: 9px;
@@ -1645,11 +1649,11 @@ td small {
   margin-bottom: 20px;
 }
 .modal h2 {
-  font-size: 36px;
+  font-size: 26px;
   margin-top: 9px;
 }
 .modal > p {
-  font-size: 12px;
+  font-size: 14px;
   color: var(--muted);
   margin-bottom: 24px;
 }
@@ -1657,7 +1661,7 @@ td small {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  font-size: 11px;
+  font-size: 13px;
   color: var(--gold-light);
   margin: 17px 0;
 }
@@ -1721,7 +1725,7 @@ td small {
   margin-bottom: 18px;
 }
 .evidence-drawer h2 {
-  font-size: 34px;
+  font-size: 26px;
   margin-top: 10px;
 }
 .evidence-drawer > .subtle {
@@ -1739,7 +1743,7 @@ td small {
   overflow-wrap: anywhere;
 }
 .source-card h3 {
-  font-size: 26px;
+  font-size: 20px;
   margin: 15px 0 12px;
 }
 .source-card p {
@@ -1784,7 +1788,7 @@ td small {
 }
 .empty-state h2 {
   color: var(--gold-light);
-  font-size: 34px;
+  font-size: 28px;
 }
 .empty-state p {
   font-size: 13px;
@@ -2033,7 +2037,7 @@ td small {
   }
   .page-head h1,
   .case-page .page-head h1 {
-    font-size: 42px;
+    font-size: 32px;
   }
   .page-head {
     align-items: flex-start;
@@ -2060,7 +2064,7 @@ td small {
     align-items: flex-start;
   }
   .welcome-panel h2 {
-    font-size: 30px;
+    font-size: 22px;
   }
   .welcome-panel p {
     font-size: 14px;
@@ -2223,7 +2227,7 @@ td small {
   }
   .page-head h1,
   .case-page .page-head h1 {
-    font-size: 38px;
+    font-size: 30px;
   }
   .page-head p,
   .page p,
@@ -2259,7 +2263,7 @@ td small {
     font-size: 35px;
   }
   .metrics small {
-    font-size: 10px;
+    font-size: 12px;
   }
   .metrics strong em {
     font-size: 10px;
@@ -2283,7 +2287,7 @@ td small {
     padding: 0 20px;
   }
   .section-head h2 {
-    font-size: 29px;
+    font-size: 22px;
   }
   .table-wrap {
     border-radius: 22px;
@@ -2292,7 +2296,7 @@ td small {
     font-size: 12px;
   }
   th {
-    font-size: 9px;
+    font-size: 11px;
   }
   td,
   th {
@@ -2302,7 +2306,7 @@ td small {
     font-size: 12px;
   }
   td small {
-    font-size: 10px;
+    font-size: 12px;
   }
   .context-note {
     font-size: 11px;
@@ -2319,7 +2323,7 @@ td small {
     flex-wrap: wrap;
   }
   .incident-banner h2 {
-    font-size: 30px;
+    font-size: 22px;
   }
   .incident-banner > div {
     flex-basis: calc(100% - 75px);

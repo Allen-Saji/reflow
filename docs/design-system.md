@@ -16,7 +16,7 @@ Reflow uses a dark editorial interface with restrained gold accents. Shared toke
 | Backdrop blur | `10px`                    | Glass surfaces                          |
 | Radius        | 24px to 40px              | Cards, dialogs and network illustration |
 
-Headings use Playfair Display Italic. UI labels, body text and tabular numbers use Inter, weights 300 through 700. Status badges include text as well as color. Supporting success/error colors remain muted so eligibility and failure states are distinguishable.
+Landing headings use Playfair Display Italic. The operational workspace uses upright Inter headings, short labels and plain descriptions for quick scanning. Dashboard body text is 14px on desktop and 16px on phones; metric labels and table details use 12-13px. UI labels, body text and tabular numbers use Inter, weights 300 through 700. Status badges include text as well as color. Supporting success/error colors remain muted so eligibility and failure states are distinguishable.
 
 ## Motion
 

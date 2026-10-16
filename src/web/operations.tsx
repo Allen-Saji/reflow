@@ -16,7 +16,7 @@ import {
 import { api } from "./api";
 
 import { Context } from "./context";
-import { Button, PageHead, OrdersTable } from "./ui";
+import { Button, PageHead, OrdersTable, useModalFocus } from "./ui";
 
 export function Operations() {
   const { state, reload, inspect, setError } = useContext(Context),
@@ -168,6 +168,7 @@ export function DisruptionModal({ onClose }: { onClose: () => void }) {
       state!.snapshot.sources.find((x) => x.kind === "notice")?.id ||
         state!.snapshot.sources[0].id,
     );
+  const focus = useModalFocus(true, onClose);
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     setBusy(true);
@@ -187,7 +188,14 @@ export function DisruptionModal({ onClose }: { onClose: () => void }) {
     }
   }
   return (
-    <div className="modal-backdrop">
+    <div
+      className="modal-backdrop"
+      ref={focus}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Report a supply disruption"
+      tabIndex={-1}
+    >
       <form className="modal" onSubmit={submit}>
         <header>
           <div>

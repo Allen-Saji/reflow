@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import {
   ReactFlow,
@@ -94,17 +94,13 @@ export function EvidenceDrawer({
   sources: Source[];
   onClose: () => void;
 }) {
-  useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
-    window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
-  }, [onClose]);
+  const focus = useModalFocus(true, onClose);
   return (
     <div className="drawer-backdrop" onClick={onClose}>
       <aside
         className="evidence-drawer"
+        ref={focus}
+        tabIndex={-1}
         aria-label="Source evidence"
         role="dialog"
         aria-modal="true"
@@ -270,4 +266,52 @@ export function PathView({ paths }: { paths: EvidencePath[] }) {
       </button>
     </div>
   );
+}
+
+export function useModalFocus(enabled: boolean, onClose: () => void) {
+  const ref = useRef<HTMLDivElement | null>(null);
+  const close = useRef(onClose);
+  close.current = onClose;
+  useEffect(() => {
+    if (!enabled || !ref.current) return;
+    const previous = document.activeElement as HTMLElement | null;
+    const root = ref.current;
+    const items = () => [
+      ...root.querySelectorAll<HTMLElement>(
+        'button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), a[href], [tabindex="0"]',
+      ),
+    ];
+    (items()[0] || root).focus();
+    const handler = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        close.current();
+      }
+      if (event.key !== "Tab") return;
+      const nodes = items(),
+        first = nodes[0],
+        last = nodes.at(-1);
+      if (!first) {
+        event.preventDefault();
+        root.focus();
+        return;
+      }
+      if (
+        event.shiftKey &&
+        (document.activeElement === first || document.activeElement === root)
+      ) {
+        event.preventDefault();
+        last?.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+    document.addEventListener("keydown", handler);
+    return () => {
+      document.removeEventListener("keydown", handler);
+      previous?.focus();
+    };
+  }, [enabled]);
+  return ref;
 }

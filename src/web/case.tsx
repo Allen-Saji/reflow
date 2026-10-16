@@ -22,7 +22,14 @@ import {
 import { api, money, download } from "./api";
 import { Source, Plan } from "../domain/model";
 import { Context } from "./context";
-import { Badge, Button, PageHead, OrdersTable, PathView } from "./ui";
+import {
+  Badge,
+  Button,
+  PageHead,
+  OrdersTable,
+  PathView,
+  useModalFocus,
+} from "./ui";
 const toolsLabel: Record<string, string> = {
   trace_disruption: "Traced the affected customer orders",
   find_replacement_offers: "Checked replacement sources",
@@ -46,6 +53,7 @@ export function RecoveryCase() {
     [request, setRequest] = useState(
       "Investigate this factory disruption and recover the affected orders within the recorded premium cap. Explain rejected alternatives and any remaining shortage.",
     );
+  const focus = useModalFocus(confirm, () => setConfirm(false));
   const plans = [...state!.plans].sort((a, b) =>
     b.createdAt.localeCompare(a.createdAt),
   );
@@ -670,6 +678,8 @@ export function RecoveryCase() {
         <div className="modal-backdrop">
           <section
             className="modal"
+            ref={focus}
+            tabIndex={-1}
             role="dialog"
             aria-modal="true"
             aria-label="Approve recovery plan"

@@ -2096,3 +2096,39 @@ td small {
     scroll-behavior: auto !important;
   }
 }
+/* Let grid tracks and header content shrink before their scrollable children. */
+.plan-layout > *,
+.app-body,
+.breadcrumbs {
+  min-width: 0;
+}
+@media (max-width: 640px) {
+  .app-top {
+    gap: 10px;
+  }
+  .breadcrumbs {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .top-actions {
+    flex-shrink: 0;
+  }
+  .top-actions select {
+    width: 100px;
+    min-width: 0;
+  }
+  .top-actions .badge {
+    display: none;
+  }
+  .page p,
+  .source-facts p,
+  .plan-banner p,
+  .plan-assumptions p,
+  .scenario-panel p,
+  .import-panel p,
+  .modal > p,
+  .notice {
+    font-size: 16px;
+  }
+}

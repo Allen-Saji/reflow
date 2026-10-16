@@ -92,6 +92,12 @@ export function DataPage() {
           Open 50-unit scenario
         </Button>
       </section>
+      {s.stockReserved > 0 && (
+        <div className="notice">
+          This scenario has recorded allocations. Open a fresh scenario to
+          compare source changes.
+        </div>
+      )}
       <div className="case-tabs" role="tablist" aria-label="Data categories">
         {["offers", "products", "sources"].map((t) => (
           <button
@@ -263,9 +269,10 @@ export function OfferEditor({
   quantity: number;
   revision: number;
 }) {
-  const { reload, setError } = useContext(Context),
+  const { state, reload, setError } = useContext(Context),
     [value, setValue] = useState(quantity),
     [busy, setBusy] = useState(false);
+  const locked = state!.plans.some((p) => p.status !== "proposed");
   useEffect(() => setValue(quantity), [quantity, revision]);
   async function save() {
     setBusy(true);
@@ -283,6 +290,12 @@ export function OfferEditor({
       <input
         aria-label={"Quoted quantity for " + id}
         type="number"
+        disabled={locked}
+        title={
+          locked
+            ? "Recorded scenario: create a fresh scenario to change sources."
+            : undefined
+        }
         min="0"
         max="1000"
         value={value}

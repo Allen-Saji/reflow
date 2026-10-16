@@ -33,7 +33,7 @@ FalkorDB is the domain store. Parameterized Cypher traverses factory -> supply o
 
 The bounded deterministic planner supports up to three orders and four offers, integer quantities, explicit compatibility/approval records, fixed assembly/delivery assumptions, quantity and budget limits. It ranks feasible plans by complete on-time orders, earlier deadlines, total coverage, then additional cost. It reports when its search limit is reached. It is not a general-purpose production optimizer.
 
-Approval is bound to an application revision. A single guarded graph write records the allocation and draft requisition; a subsequent query verifies saved state. Repeated commits return the saved result, and a source update invalidates an unexecuted proposal.
+Approval is bound to an application revision. A single guarded graph write records the allocation and draft requisition; a subsequent query verifies saved state. Repeated commits return the saved result, and a source update invalidates an unexecuted proposal. Recorded scenarios lock source edits; use a fresh scenario for subsequent comparisons.
 
 ## Investigation modes
 

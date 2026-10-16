@@ -456,9 +456,17 @@ export async function updateOffer(
   id: string,
   quantity: number,
 ) {
+  if ((await getPlans(workspace)).some((p) => p.status !== "proposed"))
+    throw new Error(
+      "This recovery is already recorded. Create a fresh scenario to change source data.",
+    );
   const s = await getSnapshot(workspace),
     offer = s.offers.find((o) => o.id === id);
   if (!offer) throw new Error("Offer not found.");
+  if (quantity < offer.independentStock)
+    throw new Error(
+      "Quantity is below the recorded independent stock. Import a revised source declaration.",
+    );
   if (s.offerAllocated[id] > quantity)
     throw new Error(
       "Quantity is below existing planned allocations. Create a fresh scenario.",

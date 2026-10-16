@@ -19,6 +19,8 @@ import {
 let connection: ReturnType<typeof FalkorDB.connect> | undefined;
 export async function db() {
   return (connection ??= FalkorDB.connect({
+    // FalkorDB forwards Redis options; its public type omits this option.
+    ...{ disableOfflineQueue: true },
     socket: {
       host: process.env.FALKORDB_HOST || "127.0.0.1",
       port: Number(process.env.FALKORDB_PORT || 6388),
@@ -41,7 +43,7 @@ export async function db() {
 }
 export async function closeDb() {
   if (connection) {
-    (await connection).close();
+    await (await connection).close();
     connection = undefined;
   }
 }

@@ -1,13 +1,6 @@
-import React, { useContext, useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef, lazy, Suspense } from "react";
 import { Link } from "react-router-dom";
-import {
-  ReactFlow,
-  Background,
-  MarkerType,
-  type Node,
-  type Edge,
-} from "@xyflow/react";
-import { ArrowUpRight, X, ChevronRight } from "lucide-react";
+import { ArrowUpRight, X } from "lucide-react";
 
 import { Source, EvidencePath } from "../domain/model";
 import { Context } from "./context";
@@ -47,16 +40,19 @@ export function Button({
   disabled = false,
   kind = "",
   type = "button",
+  reveal = false,
 }: {
   children: React.ReactNode;
   onClick?: () => void;
   disabled?: boolean;
   kind?: string;
   type?: "button" | "submit";
+  reveal?: boolean;
 }) {
   return (
     <button
       type={type}
+      data-reveal={reveal ? "" : undefined}
       className={"button " + kind}
       onClick={onClick}
       disabled={disabled}
@@ -205,66 +201,49 @@ export function OrdersTable() {
     </div>
   );
 }
-export function PathView({ paths }: { paths: EvidencePath[] }) {
-  const { state, inspect } = useContext(Context);
-  const path = paths[0];
-  if (!path)
+const GraphPath = lazy(() => import("./path-view"));
+class GraphBoundary extends React.Component<
+  { children: React.ReactNode; paths: EvidencePath[] },
+  { failed: boolean }
+> {
+  state = { failed: false };
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+  render() {
+    if (!this.state.failed) return this.props.children;
     return (
-      <div className="notice">
-        No path is recorded for this selection. Review its source evidence and
-        modeled scope.
+      <div className="notice graph-fallback" role="status">
+        <div>
+          <p>
+            The visual graph could not load. The recorded relationship path is
+            still available:
+          </p>
+          <p>{this.props.paths[0]?.names.join(" / ") || "No path returned."}</p>
+          <button
+            className="text-button"
+            onClick={() => window.location.reload()}
+          >
+            Reload graph viewer <ArrowUpRight size={14} />
+          </button>
+        </div>
       </div>
     );
-  const name = (id: string, fallback: string) => {
-    const offer = state!.snapshot.offers.find((o) => o.id === id);
-    return offer
-      ? (state!.snapshot.suppliers.find((s) => s.id === offer.supplierId)
-          ?.name || offer.supplierId) + " quote"
-      : fallback;
-  };
-  const nodes: Node[] = path.ids.map((id, i) => ({
-    id,
-    position: { x: i * 180, y: 35 },
-    data: { label: name(id, path.names[i]) },
-    type: "default",
-    className: i === 0 ? "origin-node" : "",
-  }));
-  const edges: Edge[] = nodes.slice(1).map((n, i) => ({
-    id: "edge" + i,
-    source: nodes[i].id,
-    target: n.id,
-    markerEnd: { type: MarkerType.ArrowClosed, color: "#3f6856" },
-    style: { stroke: "#3f6856", strokeWidth: 1.5 },
-  }));
+  }
+}
+export function PathView({ paths }: { paths: EvidencePath[] }) {
   return (
-    <div className="path-view">
-      <div className="path-graph" aria-label="Graph evidence path">
-        <ReactFlow
-          nodes={nodes}
-          edges={edges}
-          fitView
-          fitViewOptions={{ padding: 0.16 }}
-          nodesDraggable={false}
-          nodesConnectable={false}
-          zoomOnScroll={false}
-          panOnScroll={false}
-          proOptions={{ hideAttribution: true }}
-        >
-          <Background color="#dcded4" gap={20} />
-        </ReactFlow>
-      </div>
-      <div className="path-description">
-        {path.ids.map((id, i) => (
-          <React.Fragment key={id}>
-            {i > 0 && <ChevronRight size={13} />}
-            <span>{name(id, path.names[i])}</span>
-          </React.Fragment>
-        ))}
-      </div>
-      <button className="text-button" onClick={() => inspect(path.sourceIds)}>
-        Inspect source records <ArrowUpRight size={15} />
-      </button>
-    </div>
+    <GraphBoundary paths={paths}>
+      <Suspense
+        fallback={
+          <div className="notice" role="status">
+            Loading relationship evidence...
+          </div>
+        }
+      >
+        <GraphPath paths={paths} />
+      </Suspense>
+    </GraphBoundary>
   );
 }
 
@@ -314,4 +293,26 @@ export function useModalFocus(enabled: boolean, onClose: () => void) {
     };
   }, [enabled]);
   return ref;
+}
+
+export function moveTab(
+  event: React.KeyboardEvent<HTMLDivElement>,
+  values: string[],
+  current: string,
+  select: (value: string) => void,
+) {
+  const step =
+    event.key === "ArrowRight" ? 1 : event.key === "ArrowLeft" ? -1 : 0;
+  if (!step && event.key !== "Home" && event.key !== "End") return;
+  event.preventDefault();
+  const next =
+    event.key === "Home"
+      ? 0
+      : event.key === "End"
+        ? values.length - 1
+        : (values.indexOf(current) + step + values.length) % values.length;
+  select(values[next]);
+  event.currentTarget
+    .querySelectorAll<HTMLButtonElement>('[role="tab"]')
+    [next]?.focus();
 }

@@ -25,7 +25,7 @@ For frontend development, run `pnpm dev` and `pnpm dev:web` in separate terminal
 
 The database listens on localhost port 6388. Its image is pinned by digest and AOF data is stored in a named volume. Do not expose the database port publicly.
 
-[Architecture, graph model and essential Cypher](docs/architecture.md)
+[Architecture, graph model and essential Cypher](docs/architecture.md) | [Interface design system](docs/design-system.md)
 
 ## Recovery model
 

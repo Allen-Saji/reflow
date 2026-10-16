@@ -19,6 +19,7 @@ import {
   ShieldCheck,
   Clock3,
 } from "lucide-react";
+import { useReveal } from "./motion";
 import { api, money, download } from "./api";
 import { Source, Plan } from "../domain/model";
 import { Context } from "./context";
@@ -29,6 +30,7 @@ import {
   OrdersTable,
   PathView,
   useModalFocus,
+  moveTab,
 } from "./ui";
 const toolsLabel: Record<string, string> = {
   trace_disruption: "Traced the affected customer orders",
@@ -53,6 +55,7 @@ export function RecoveryCase() {
     [request, setRequest] = useState(
       "Investigate this factory disruption and recover the affected orders within the recorded premium cap. Explain rejected alternatives and any remaining shortage.",
     );
+  const reveal = useReveal<HTMLElement>(tab);
   const focus = useModalFocus(confirm, () => setConfirm(false));
   const plans = [...state!.plans].sort((a, b) =>
     b.createdAt.localeCompare(a.createdAt),
@@ -133,7 +136,7 @@ export function RecoveryCase() {
       </main>
     );
   return (
-    <main className="page case-page">
+    <main className="page case-page" ref={reveal}>
       <Link className="back-link" to="/app">
         <ArrowLeft size={14} />
         Operations
@@ -158,7 +161,7 @@ export function RecoveryCase() {
               : stale
                 ? "Needs revision"
                 : busy
-                  ? "Investigating"
+                  ? "Working"
                   : plan
                     ? "Ready for approval"
                     : "Investigation needed"}
@@ -195,12 +198,16 @@ export function RecoveryCase() {
         className="case-tabs"
         role="tablist"
         aria-label="Recovery case sections"
+        onKeyDown={(event) =>
+          moveTab(event, ["impact", "options", "plan", "activity"], tab, setTab)
+        }
       >
         {["impact", "options", "plan", "activity"].map((t, i) => (
           <button
             key={t}
             role="tab"
             aria-selected={tab === t}
+            tabIndex={tab === t ? 0 : -1}
             className={tab === t ? "active" : ""}
             onClick={() => setTab(t)}
           >

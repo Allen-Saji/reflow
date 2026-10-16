@@ -9,16 +9,18 @@ import {
   Download,
   Upload,
 } from "lucide-react";
+import { useReveal } from "./motion";
 import { api, download } from "./api";
 import { Source } from "../domain/model";
 import { Context } from "./context";
-import { Button, PageHead, OrdersTable } from "./ui";
+import { Button, PageHead, OrdersTable, moveTab } from "./ui";
 
 export function DataPage() {
   const { state, reload, inspect, setError } = useContext(Context),
     nav = useNavigate(),
     [busy, setBusy] = useState(false),
     [recordTab, setRecordTab] = useState("offers");
+  const reveal = useReveal<HTMLElement>(recordTab);
   const s = state!.snapshot;
   async function fresh(variant: "base" | "shortage") {
     setBusy(true);
@@ -62,7 +64,7 @@ export function DataPage() {
     }
   }
   return (
-    <main className="page">
+    <main className="page" ref={reveal}>
       <PageHead
         eyebrow="SOURCE RECORDS"
         title="The facts behind the plan."
@@ -98,11 +100,24 @@ export function DataPage() {
           compare source changes.
         </div>
       )}
-      <div className="case-tabs" role="tablist" aria-label="Data categories">
+      <div
+        className="case-tabs"
+        role="tablist"
+        aria-label="Data categories"
+        onKeyDown={(event) =>
+          moveTab(
+            event,
+            ["offers", "products", "sources"],
+            recordTab,
+            setRecordTab,
+          )
+        }
+      >
         {["offers", "products", "sources"].map((t) => (
           <button
             role="tab"
             aria-selected={recordTab === t}
+            tabIndex={recordTab === t ? 0 : -1}
             className={recordTab === t ? "active" : ""}
             key={t}
             onClick={() => setRecordTab(t)}

@@ -11,9 +11,11 @@ import {
 } from "lucide-react";
 import { api } from "./api";
 
+import { useReveal } from "./motion";
 import { Logo, Button } from "./ui";
 
 export function Landing() {
+  const reveal = useReveal<HTMLDivElement>("landing", true);
   const nav = useNavigate(),
     [busy, setBusy] = useState(false),
     [error, setError] = useState("");
@@ -28,8 +30,8 @@ export function Landing() {
     }
   }
   return (
-    <div className="landing">
-      <header className="landing-nav">
+    <div className="landing bg-dots" ref={reveal}>
+      <header className="landing-nav" data-reveal>
         <Logo />
         <span className="mono subtle">CONNECTED SUPPLY / CLEAR DECISIONS</span>
         <Button onClick={open} disabled={busy} kind="quiet">
@@ -38,26 +40,26 @@ export function Landing() {
       </header>
       <main className="landing-main">
         <div className="hero-copy">
-          <div className="eyebrow">
+          <div className="eyebrow" data-reveal>
             <span className="small-rule" /> OPERATIONS, BACK IN MOTION
           </div>
-          <h1>
+          <h1 data-reveal>
             A supplier stops.
             <br />
             Your orders
             <br />
             <em>don't have to.</em>
           </h1>
-          <p className="hero-description">
+          <p className="hero-description" data-reveal>
             Follow the disruption. Find the right alternative. Put a recovery
             plan into motion, with the evidence behind every decision.
           </p>
-          <Button onClick={open} disabled={busy}>
+          <Button onClick={open} disabled={busy} reveal>
             {busy ? <LoaderCircle className="spin" size={18} /> : null}
             {busy ? "Preparing your workspace" : "Open the sample workspace"}
             <ArrowRight size={18} />
           </Button>
-          <p className="sample-note">
+          <p className="sample-note" data-reveal>
             Fictional manufacturer. Real graph queries and saved actions.
             <br />
             Your workspace is isolated from other visitors.
@@ -68,9 +70,12 @@ export function Landing() {
             </div>
           )}
         </div>
-        <div className="hero-board">
+        <div className="hero-board" data-reveal>
+          <div className="board-orbit" aria-hidden="true" />
           <div className="board-top">
-            <span className="mono">THE CONNECTION IS THE CLUE</span>
+            <span className="board-label">
+              <span className="status-light" /> NETWORK INTELLIGENCE
+            </span>
             <Network size={18} />
           </div>
           <div className="board-node factory">
@@ -78,7 +83,7 @@ export function Landing() {
               <Layers size={20} />
             </span>
             <div>
-              <span className="mono">UPSTREAM FACTORY</span>
+              <span className="mono">01 / UPSTREAM FACTORY</span>
               <strong>One shared dependency.</strong>
             </div>
             <span className="red-dot" />
@@ -111,7 +116,7 @@ export function Landing() {
           </div>
         </div>
       </main>
-      <div className="landing-bottom">
+      <div className="landing-bottom" data-reveal>
         <div>
           <span className="index">01</span>
           <strong>Trace the impact</strong>
@@ -128,7 +133,7 @@ export function Landing() {
           <p>Approved allocations. A saved result.</p>
         </div>
       </div>
-      <footer className="landing-footer">
+      <footer className="landing-footer" data-reveal>
         <span>Built on connected facts.</span>
         <span className="mono">POWERED BY FALKORDB</span>
       </footer>

@@ -13,18 +13,20 @@ import {
   ShieldCheck,
   Clock3,
 } from "lucide-react";
+import { useReveal } from "./motion";
 import { api } from "./api";
 
 import { Context } from "./context";
 import { Button, PageHead, OrdersTable, useModalFocus } from "./ui";
 
 export function Operations() {
+  const reveal = useReveal<HTMLElement>();
   const { state, reload, inspect, setError } = useContext(Context),
     [modal, setModal] = useState(false);
   const s = state!.snapshot;
   const verified = state!.plans.some((p) => p.status === "verified");
   return (
-    <main className="page">
+    <main className="page" ref={reveal}>
       <PageHead
         eyebrow="THE OPERATIONS DESK"
         title="Keep the work moving."

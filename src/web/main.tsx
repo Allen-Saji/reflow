@@ -28,11 +28,12 @@ import { Landing } from "./landing";
 import { Operations } from "./operations";
 import { RecoveryCase } from "./case";
 import { DataPage } from "./data";
-import "@fontsource/ibm-plex-sans/latin-400.css";
-import "@fontsource/ibm-plex-sans/latin-500.css";
-import "@fontsource/ibm-plex-sans/latin-600.css";
-import "@fontsource/ibm-plex-mono/latin-400.css";
-import "@xyflow/react/dist/style.css";
+import "@fontsource/inter/latin-300.css";
+import "@fontsource/inter/latin-400.css";
+import "@fontsource/inter/latin-500.css";
+import "@fontsource/inter/latin-600.css";
+import "@fontsource/inter/latin-700.css";
+import "@fontsource/playfair-display/latin-400-italic.css";
 import "./style.css";
 function Shell() {
   const [state, setState] = useState<AppState | null>(null),
@@ -52,7 +53,7 @@ function Shell() {
     <Context.Provider
       value={{ state, reload, inspect: setEvidence, error, setError }}
     >
-      <div className="app-shell">
+      <div className="app-shell bg-dots">
         <aside className="sidebar">
           <Logo small />
           <div className="workspace-caption">OPERATIONS WORKSPACE</div>
@@ -126,7 +127,7 @@ function Shell() {
                   : "Synthetic data"}
               </Badge>
               <span className="avatar">
-                {state?.snapshot.name.slice(0, 2).toUpperCase() || "SR"}
+                {state?.snapshot.name.slice(0, 2).toUpperCase() || "RF"}
               </span>
             </div>
           </header>

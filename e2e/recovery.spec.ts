@@ -73,3 +73,55 @@ test("recovers orders, persists approval, and exposes a revised-data shortage", 
     page.getByRole("button", { name: "Approve recovery plan" }),
   ).toBeDisabled();
 });
+
+test("supports reduced motion, keyboard tabs and source drawers on a phone", async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+  await expect(
+    page.getByRole("heading", {
+      name: "A supplier stops. Your orders don't have to.",
+    }),
+  ).toBeVisible();
+  await expect
+    .poll(() =>
+      page.evaluate(() => document.body.scrollWidth <= window.innerWidth),
+    )
+    .toBe(true);
+  await page.getByRole("button", { name: "Open the sample workspace" }).click();
+  await page
+    .getByRole("button", { name: "Report disruption", exact: true })
+    .click();
+  await page
+    .getByRole("button", { name: "Close disruption form" })
+    .press("Escape");
+  await expect(page.getByRole("dialog")).toHaveCount(0);
+  await expect(
+    page.getByRole("button", { name: "Report disruption", exact: true }),
+  ).toBeFocused();
+  await page.getByRole("link", { name: "Data & evidence" }).click();
+  await page.getByRole("tab", { name: "Supplier offers" }).focus();
+  await page.keyboard.press("ArrowRight");
+  await expect(
+    page.getByRole("tab", { name: "Products & orders" }),
+  ).toHaveAttribute("aria-selected", "true");
+  await page.keyboard.press("End");
+  await expect(
+    page.getByRole("tab", { name: "Source evidence", exact: true }),
+  ).toHaveAttribute("aria-selected", "true");
+  await page
+    .getByRole("button", { name: /Approved manufacturing specification/ })
+    .click();
+  await expect(
+    page.getByRole("dialog", { name: "Source evidence" }),
+  ).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(page.getByRole("dialog")).toHaveCount(0);
+  await expect
+    .poll(() =>
+      page.evaluate(() => document.body.scrollWidth <= window.innerWidth),
+    )
+    .toBe(true);
+});

@@ -55,6 +55,7 @@ describe("FalkorDB recovery workflow", () => {
       true,
     );
     expect((await getSnapshot(w)).stockReserved).toBe(20);
+    await expect(proposePlan(w)).rejects.toThrow(/already recorded/);
   });
   it("blocks stale approval after a source update", async () => {
     const w = await scenario(),

@@ -22,11 +22,22 @@ export async function db() {
     socket: {
       host: process.env.FALKORDB_HOST || "127.0.0.1",
       port: Number(process.env.FALKORDB_PORT || 6388),
+      connectTimeout: 5000,
     },
     ...(process.env.FALKORDB_PASSWORD
       ? { password: process.env.FALKORDB_PASSWORD }
       : {}),
-  }));
+  })
+    .then((client) => {
+      // Redis reconnects automatically. Handling the forwarded event keeps a
+      // temporary database restart from terminating the application process.
+      client.on("error", () => {});
+      return client;
+    })
+    .catch((error) => {
+      connection = undefined;
+      throw error;
+    }));
 }
 export async function closeDb() {
   if (connection) {
@@ -244,6 +255,10 @@ export async function getCandidates(workspace: string) {
   return evaluateCandidates(s, impact, exposures, approvals);
 }
 export async function proposePlan(workspace: string) {
+  if ((await getPlans(workspace)).some((p) => p.status !== "proposed"))
+    throw new Error(
+      "A recovery is already recorded. Create a fresh scenario to compare changes.",
+    );
   const s = await getSnapshot(workspace),
     impact = await traceImpact(workspace),
     candidates = await getCandidates(workspace),
@@ -399,12 +414,26 @@ export async function verifyPlan(workspace: string, id: string) {
     actual = JSON.stringify(
       allocations.sort((a: any, b: any) => a.orderId.localeCompare(b.orderId)),
     );
+  const requested = await query(
+    workspace,
+    "MATCH(r:Requisition)-[:FOR_PLAN]->(p:Plan {id:$id}),(r)-[q:REQUESTS]->(o:Offer) RETURN o.id AS id,q.quantity AS quantity",
+    { id },
+  );
+  const requestedMap = Object.fromEntries(
+    requested.map((r) => [r.id, r.quantity]),
+  );
   const verified =
     expected === actual &&
     requisition.length === 1 &&
-    snapshot.stockReserved >= plan.stockUsed &&
+    requisition[0].id === plan.requisitionId &&
+    requisition[0].status === "draft" &&
+    requested.length === Object.keys(plan.purchased).length &&
     Object.entries(plan.purchased).every(
-      ([key, q]) => (snapshot.offerAllocated[key] || 0) >= q,
+      ([key, q]) => requestedMap[key] === q,
+    ) &&
+    snapshot.stockReserved === plan.stockUsed &&
+    Object.entries(plan.purchased).every(
+      ([key, q]) => (snapshot.offerAllocated[key] || 0) === q,
     );
   if (!verified) throw new Error("Saved plan failed readback verification.");
   await query(

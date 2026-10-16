@@ -31,6 +31,8 @@ export async function buildApp() {
     },
     bodyLimit: 200000,
   });
+  if (process.env.NODE_ENV === "production" && !process.env.COOKIE_SECRET)
+    throw new Error("COOKIE_SECRET is required in production.");
   await app.register(cookie, {
     secret: process.env.COOKIE_SECRET || randomBytes(32).toString("hex"),
   });
@@ -228,9 +230,9 @@ export async function buildApp() {
     );
   });
   if (existsSync(resolve("dist/index.html"))) {
-    await app.register(serveStatic, { root: resolve("dist"), wildcard: false });
+    await app.register(serveStatic, { root: resolve("dist"), wildcard: true });
     app.setNotFoundHandler((req, reply) =>
-      req.url.startsWith("/api/")
+      req.url.startsWith("/api/") || req.url.startsWith("/assets/")
         ? reply.code(404).send({ error: "Not found." })
         : reply.sendFile("index.html"),
     );

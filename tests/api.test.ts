@@ -19,6 +19,19 @@ async function workspace(variant = "base") {
   };
 }
 describe("public application boundary", () => {
+  it("serves SPA routes but never returns HTML for missing assets", async () => {
+    const page = await app.inject("/app/data");
+    expect(page.statusCode).toBe(200);
+    expect(page.headers["content-type"]).toContain("text/html");
+    expect((await app.inject("/assets/does-not-exist.js")).statusCode).toBe(
+      404,
+    );
+    expect((await app.inject("/api/unknown")).statusCode).toBe(404);
+    expect((await app.inject("/api/health")).json()).toEqual({
+      ok: true,
+      database: "connected",
+    });
+  });
   it("requires a signed workspace session and prevents switching to another visitor workspace", async () => {
     expect((await app.inject("/api/state")).statusCode).toBe(400);
     const a = await workspace(),

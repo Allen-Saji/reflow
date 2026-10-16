@@ -1,6 +1,6 @@
 # Architecture
 
-Supplier Rescue separates investigation, constraint checks and approved actions. FalkorDB is the domain store, not a visualization cache.
+Reflow separates investigation, constraint checks and approved actions. FalkorDB is the domain store, not a visualization cache.
 
 ## Graph model
 

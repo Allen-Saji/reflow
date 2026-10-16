@@ -1,10 +1,10 @@
-# Supplier Rescue
+# Reflow
 
-Supplier Rescue traces a manufacturing disruption through component dependencies and customer orders, evaluates replacement supply, and records an approved recovery plan with source evidence.
+Reflow traces a manufacturing disruption through component dependencies and customer orders, evaluates replacement supply, and records an approved recovery plan with source evidence.
 
 The included Northline Lighting dataset is fictional and explicitly synthetic. Internal allocations and draft requisitions are real application records; the application does not purchase components, reserve external supplier stock or guarantee customer delivery.
 
-[Open Supplier Rescue](https://app-production-e384.up.railway.app)
+[Open Reflow](https://app-production-e384.up.railway.app)
 
 ## Development
 

@@ -21,7 +21,7 @@ export function Logo({ small = false }: { small?: boolean }) {
         <i />
       </span>
       <span>
-        supplier<span className="logo-light">rescue</span>
+        reflow
         <sup> / </sup>
       </span>
     </Link>

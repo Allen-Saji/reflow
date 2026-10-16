@@ -23,7 +23,7 @@ export function createMcpServer(
   workspace: string,
   onEvent?: (event: ToolEvent) => void,
 ) {
-  const server = new McpServer({ name: "supplier-rescue", version: "0.1.0" });
+  const server = new McpServer({ name: "reflow", version: "0.1.0" });
   function register(
     name: string,
     description: string,
@@ -120,7 +120,7 @@ export async function withMcp<T>(
   onEvent?: (event: ToolEvent) => void,
 ) {
   const server = createMcpServer(workspace, onEvent),
-    client = new Client({ name: "supplier-rescue-app", version: "0.1.0" }),
+    client = new Client({ name: "reflow-app", version: "0.1.0" }),
     [a, b] = InMemoryTransport.createLinkedPair();
   await server.connect(a);
   await client.connect(b);

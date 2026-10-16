@@ -86,7 +86,7 @@ function Shell() {
               Actions stay accountable.
             </p>
             <Link to="/">
-              About Supplier Rescue <ArrowUpRight size={13} />
+              About Reflow <ArrowUpRight size={13} />
             </Link>
           </div>
         </aside>

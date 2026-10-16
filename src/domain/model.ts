@@ -156,6 +156,8 @@ export function validateFixture(value: unknown): Fixture {
   const ids = all.map((x) => x.id);
   if (new Set(ids).size !== ids.length)
     throw new Error("Record IDs must be unique.");
+  if (f.products.some((p) => ids.includes(p.id + "_assembly")))
+    throw new Error("Record IDs cannot collide with generated assembly IDs.");
   const has = (xs: { id: string }[], v: string) => xs.some((x) => x.id === v);
   for (const r of all)
     if ("sourceId" in r && !has(f.sources, r.sourceId))

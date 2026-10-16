@@ -108,8 +108,9 @@ export async function createWorkspace(input: Fixture = sampleFixture()) {
   for (const p of f.products) {
     const v = "a" + count++;
     params[v] = p.id + "_assembly";
+    params[v + "Name"] = p.name + " assembly";
     clauses.push(
-      `CREATE (${v}:Assembly {id: $${v}, name: 'Driver assembly'}) CREATE (${vars[p.id]})-[:REQUIRES]->(${v}) CREATE (${v})-[:REQUIRES]->(${vars[p.partId]})`,
+      `CREATE (${v}:Assembly {id: $${v}, name: $${v}Name}) CREATE (${vars[p.id]})-[:REQUIRES]->(${v}) CREATE (${v})-[:REQUIRES]->(${vars[p.partId]})`,
     );
     for (const part of p.approvedPartIds) edge(part, "APPROVED_FOR", p.id);
   }

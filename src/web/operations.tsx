@@ -68,7 +68,7 @@ export function Operations() {
           </small>
         </div>
         <div>
-          <span>Driver inventory</span>
+          <span>On-hand inventory</span>
           <strong>
             {s.stock.quantity - s.stockReserved}
             <em> units</em>

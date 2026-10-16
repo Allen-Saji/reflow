@@ -41,7 +41,7 @@ export function DataPage() {
       caseId,
       ...fixture
     } = s;
-    download("northline-supply-data.json", fixture);
+    download("supply-dataset.json", fixture);
   };
   async function upload(file?: File) {
     if (!file) return;

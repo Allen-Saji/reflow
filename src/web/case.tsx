@@ -175,7 +175,7 @@ export function RecoveryCase() {
               .filter((o) => state!.impact?.orderIds.includes(o.id))
               .reduce((n, o) => n + o.quantity, 0)}
           </strong>{" "}
-          drivers required
+          component units required
         </span>
         <span>
           <strong>{s.stock.quantity - s.stockReserved}</strong> unallocated on

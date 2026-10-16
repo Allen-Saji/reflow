@@ -75,4 +75,44 @@ describe("FalkorDB recovery workflow", () => {
     expect((await proposePlan(a)).plan.remainingShortage).toBe(30);
     expect((await proposePlan(b)).plan.remainingShortage).toBe(0);
   });
+  it("plans an imported dataset with independently named record IDs", async () => {
+    const f = sampleFixture();
+    const records = [
+      ...f.sources,
+      ...f.factories,
+      ...f.suppliers,
+      ...f.parts,
+      ...f.products,
+      ...f.orders,
+      ...f.offers,
+      f.stock,
+    ];
+    const ids = new Map(records.map((r) => [r.id, "custom_" + r.id]));
+    const rename = (value: any): any =>
+      Array.isArray(value)
+        ? value.map(rename)
+        : value && typeof value === "object"
+          ? Object.fromEntries(
+              Object.entries(value).map(([k, v]) => [k, rename(v)]),
+            )
+          : typeof value === "string"
+            ? ids.get(value) || value
+            : value;
+    const custom = rename(f);
+    custom.name = "Workshop Supply";
+    const w = await createWorkspace(custom);
+    await recordDisruption(
+      w,
+      {
+        factoryId: "custom_factory_z",
+        sourceId: "custom_src_notice",
+        untilDay: 8,
+      },
+      20000,
+    );
+    const { plan, impact } = await proposePlan(w);
+    expect(impact.orderIds).toEqual(["custom_O-101", "custom_O-102"]);
+    expect(plan.purchased).toEqual({ custom_offer_d: 80 });
+    expect(plan.premiumCents).toBe(16000);
+  });
 });

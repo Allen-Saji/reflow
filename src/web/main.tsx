@@ -28,6 +28,7 @@ import { Landing } from "./landing";
 import { Operations } from "./operations";
 import { RecoveryCase } from "./case";
 import { DataPage } from "./data";
+import { ThemeProvider, ThemeToggle } from "./theme";
 import "@fontsource/inter/latin-300.css";
 import "@fontsource/inter/latin-400.css";
 import "@fontsource/inter/latin-500.css";
@@ -120,6 +121,7 @@ function Shell() {
                   ? "Public dataset"
                   : "Synthetic data"}
               </Badge>
+              <ThemeToggle />
               <span className="avatar">
                 {state?.snapshot.name.slice(0, 2).toUpperCase() || "RF"}
               </span>
@@ -169,12 +171,14 @@ function Shell() {
 }
 createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route path="/app/*" element={<Shell />} />
-        <Route path="*" element={<Landing />} />
-      </Routes>
-    </BrowserRouter>
+    <ThemeProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Landing />} />
+          <Route path="/app/*" element={<Shell />} />
+          <Route path="*" element={<Landing />} />
+        </Routes>
+      </BrowserRouter>
+    </ThemeProvider>
   </React.StrictMode>,
 );

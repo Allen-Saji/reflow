@@ -1,6 +1,6 @@
 # Interface design system
 
-Reflow uses a dark editorial interface with restrained gold accents. Shared tokens and responsive components live in `src/web/style.css`; fonts are served from the application assets.
+Reflow offers dark gold and light ivory/bronze themes with shared typography and layouts. Shared tokens and responsive components live in `src/web/style.css`; fonts are served from the application assets.
 
 ## Tokens
 
@@ -17,6 +17,24 @@ Reflow uses a dark editorial interface with restrained gold accents. Shared toke
 | Radius        | 24px to 40px              | Cards, dialogs and network illustration |
 
 Landing headings use Playfair Display Italic. The operational workspace uses upright Inter headings, short labels and plain descriptions for quick scanning. Dashboard body text is 14px on desktop and 16px on phones; metric labels and table details use 12-13px. UI labels, body text and tabular numbers use Inter, weights 300 through 700. Status badges include text as well as color. Supporting success/error colors remain muted so eligibility and failure states are distinguishable.
+
+## Theme selection
+
+A theme button is available in the landing navigation and workspace header. New visitors follow their operating system preference. An explicit light/dark choice is saved under `reflow-theme` in local storage, takes precedence over system changes and stays synchronized across tabs. If storage is blocked, the control works for the current visit.
+
+The initial HTML sets the saved/system theme before the application stylesheet loads. Theme changes also update `color-scheme` and the browser's `theme-color`. Dialogs, source drawers, forms, tables, status colors, dot grids and lazy graph nodes use shared palette tokens. Graph arrows and the React Flow color mode update with the selected theme.
+
+| Token           | Dark        | Light        |
+| --------------- | ----------- | ------------ |
+| Canvas          | `#0a0a0a`   | `#f5f2ec`    |
+| Primary text    | `#eee9e2`   | `#25211d`    |
+| Supporting text | `#a8a29a`   | `#655d54`    |
+| Accent          | `#a78b71`   | `#8b623e`    |
+| Accent text     | `#c9b8a0`   | `#755033`    |
+| Card            | White at 3% | White at 70% |
+| Dot grid        | White at 8% | Brown at 10% |
+
+Primary buttons use separate fill/foreground tokens so the bronze text palette does not dictate button contrast. Theme switching keeps content stationary; interaction motion continues to respect reduced-motion preferences.
 
 ## Motion
 

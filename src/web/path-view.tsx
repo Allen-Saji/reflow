@@ -9,10 +9,13 @@ import {
 import { ArrowUpRight, ChevronRight } from "lucide-react";
 import type { EvidencePath } from "../domain/model";
 import { Context } from "./context";
+import { useTheme } from "./theme";
 import "@xyflow/react/dist/style.css";
 
 export default function GraphPath({ paths }: { paths: EvidencePath[] }) {
   const { state, inspect } = useContext(Context);
+  const { theme } = useTheme();
+  const edgeColor = theme === "light" ? "#8b623e" : "#a78b71";
   const path = paths[0];
   if (!path)
     return (
@@ -39,13 +42,15 @@ export default function GraphPath({ paths }: { paths: EvidencePath[] }) {
     id: "edge" + i,
     source: nodes[i].id,
     target: n.id,
-    markerEnd: { type: MarkerType.ArrowClosed, color: "#a78b71" },
-    style: { stroke: "#a78b71", strokeWidth: 1.5 },
+    markerEnd: { type: MarkerType.ArrowClosed, color: edgeColor },
+    style: { stroke: edgeColor, strokeWidth: 1.5 },
   }));
   return (
     <div className="path-view">
       <div className="path-graph" aria-label="Graph evidence path">
         <ReactFlow
+          colorMode={theme}
+          style={{ background: "transparent" }}
           nodes={nodes}
           edges={edges}
           fitView
@@ -56,7 +61,7 @@ export default function GraphPath({ paths }: { paths: EvidencePath[] }) {
           panOnScroll={false}
           proOptions={{ hideAttribution: true }}
         >
-          <Background color="rgba(255,255,255,0.08)" gap={32} />
+          <Background color="var(--dots)" gap={32} />
         </ReactFlow>
       </div>
       <div className="path-description">

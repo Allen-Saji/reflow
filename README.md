@@ -34,6 +34,7 @@ A cheaper supplier can still depend on the same disrupted factory. Reflow querie
 - Review quantities, projected delivery dates, uncovered demand and additional cost before approval.
 - Approve internal stock allocations and a draft purchase requisition, then verify the saved graph records.
 - Inspect source records, change an uncommitted quote, import/export structured JSON, and compare fresh scenarios.
+- Switch between light and dark themes with a saved browser preference.
 
 ## Try it
 

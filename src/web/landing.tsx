@@ -13,6 +13,7 @@ import { api } from "./api";
 
 import { useReveal } from "./motion";
 import { Logo, Button } from "./ui";
+import { ThemeToggle } from "./theme";
 
 export function Landing() {
   const reveal = useReveal<HTMLDivElement>("landing", true);
@@ -34,9 +35,12 @@ export function Landing() {
       <header className="landing-nav" data-reveal>
         <Logo />
         <span className="mono subtle">CONNECTED SUPPLY / CLEAR DECISIONS</span>
-        <Button onClick={open} disabled={busy} kind="quiet">
-          Open workspace <ArrowUpRight size={16} />
-        </Button>
+        <div className="landing-nav-actions">
+          <ThemeToggle />
+          <Button onClick={open} disabled={busy} kind="quiet">
+            Open workspace <ArrowUpRight size={16} />
+          </Button>
+        </div>
       </header>
       <main className="landing-main">
         <div className="hero-copy">

@@ -4,6 +4,20 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#0a0a0a" />
+    <script>
+      (() => {
+        let theme = matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark"
+          : "light";
+        try {
+          const saved = localStorage.getItem("reflow-theme");
+          if (saved === "light" || saved === "dark") theme = saved;
+        } catch {}
+        document.documentElement.dataset.theme = theme;
+        document.querySelector('meta[name="theme-color"]').content =
+          theme === "light" ? "#f5f2ec" : "#0a0a0a";
+      })();
+    </script>
     <meta
       name="description"
       content="Trace supplier disruptions, compare evidence-backed alternatives and verify a recovery plan."

@@ -2,6 +2,7 @@ import { test, expect } from "@playwright/test";
 test("recovers orders, persists approval, and exposes a revised-data shortage", async ({
   page,
 }) => {
+  await page.emulateMedia({ colorScheme: "dark" });
   await page.goto("/");
   await page.getByRole("button", { name: "Open the sample workspace" }).click();
   await page
@@ -77,7 +78,7 @@ test("recovers orders, persists approval, and exposes a revised-data shortage", 
 test("supports reduced motion, keyboard tabs and source drawers on a phone", async ({
   page,
 }) => {
-  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.emulateMedia({ reducedMotion: "reduce", colorScheme: "light" });
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");
   await expect(

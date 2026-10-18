@@ -5,6 +5,7 @@ COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
 COPY tsconfig.json vite.config.ts index.html ./
 COPY src ./src
+COPY public ./public
 RUN pnpm build
 RUN pnpm prune --prod
 

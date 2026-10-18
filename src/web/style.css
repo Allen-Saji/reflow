@@ -454,11 +454,6 @@ strong {
   justify-content: space-between;
   gap: 24px;
 }
-.landing-nav > .mono {
-  font-size: 9px;
-  letter-spacing: 0.16em;
-  color: var(--faint);
-}
 .landing-main {
   max-width: 1440px;
   margin: auto;
@@ -2048,9 +2043,6 @@ td small {
   }
   .landing-nav {
     height: 88px;
-  }
-  .landing-nav > .mono {
-    display: none;
   }
   .landing-nav-actions > .button {
     min-height: 44px;

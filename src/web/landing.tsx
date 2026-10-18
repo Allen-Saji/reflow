@@ -34,7 +34,6 @@ export function Landing() {
     <div className="landing bg-dots" ref={reveal}>
       <header className="landing-nav" data-reveal>
         <Logo />
-        <span className="mono subtle">CONNECTED SUPPLY / CLEAR DECISIONS</span>
         <div className="landing-nav-actions">
           <ThemeToggle />
           <Button onClick={open} disabled={busy} kind="quiet">

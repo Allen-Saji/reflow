@@ -23,6 +23,21 @@ Source-backed records retain their structured input as JSON scalar properties. M
 
 The initial schema represents one critical component per product and an explicit assembly stage. It does not ingest arbitrary manufacturing BOMs or establish independence outside the supplied network.
 
+## Recovery records
+
+The workflow adds these persisted relationships after investigation and approval:
+
+```mermaid
+flowchart LR
+  Plan -->|IN_WORKSPACE| Workspace
+  Approval -->|APPROVES| Plan
+  Allocation -->|FROM_PLAN| Plan
+  Requisition -->|FOR_PLAN| Plan
+  Requisition -->|REQUESTS: quantity| Offer
+```
+
+The disruption and revision are properties of `Workspace`. Allocation detail, including its order ID and stock/offer quantities, is stored as JSON on `Allocation`. `Activity` nodes retain actual MCP tool inputs, outputs and timings within the workspace graph. Their records are separate from the supply network.
+
 ## Essential Cypher
 
 The impact query follows an actual variable-length dependency path, including assemblies, from an exposed offer to customer orders:
